@@ -45,7 +45,7 @@ public class MapGen
 
 		int[] fleckengroesse = berechneFleckengroesse(anzahlFlecken);
 		
-		for(int i = 0; fleckengroesse.length < i ; i++)
+		for(int i = 0;i < fleckengroesse.length ; i++)
 		{
 			setzeWasser(fleckengroesse[i]);
 		}
@@ -101,7 +101,6 @@ public class MapGen
 		
 		while(zuVerteilen > 0)
 		{
-			
 			if(map[pos[0]][pos[1]] == null)
 			{
 				map[pos[0]][pos[1]] = new WasserCreator().createFeld();
@@ -161,9 +160,9 @@ public class MapGen
 			start[0] = (int)(Math.random()*map.length);
 			start[1] = (int)(Math.random()*map[0].length);
 				
-			if (!(map[start[0]][start[1]] == null))
+			if ((map[start[0]][start[1]] == null))
 			{
-				besetzt = true;
+				besetzt = false;
 			}
 		}
 		return start;
