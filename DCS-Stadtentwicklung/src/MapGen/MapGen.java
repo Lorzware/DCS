@@ -42,11 +42,12 @@ public class MapGen
 	private void erzeugeWasser()
 	{
 		int anzahlFlecken = bestimmeAnzahlSpots(wasserMenge);
-
+		System.out.println("Fleckenanzahl: " + anzahlFlecken);
 		int[] fleckengroesse = berechneFleckengroesse(anzahlFlecken);
 		
 		for(int i = 0;i < fleckengroesse.length ; i++)
 		{
+			System.out.println("Fleck " + i + " groesse " + fleckengroesse[i]);
 			setzeWasser(fleckengroesse[i]);
 		}
 	}
@@ -80,7 +81,7 @@ public class MapGen
 	{
 		if (menge > 50)
 		{
-			return (int) (Math.random()*3);
+			return (int) (1+Math.random()*2);
 		}
 		else if (menge < 20)
 		{
@@ -88,7 +89,7 @@ public class MapGen
 		}
 		else
 		{
-			return (int) (Math.random()*2);
+			return (int) (1+Math.random()*1);
 		}
 	}
 
@@ -98,7 +99,7 @@ public class MapGen
 		int zuVerteilen = anzahl;
 		
 		int[] pos = sucheWasserStartPunkt();
-		
+		System.out.println("FleckstartPosX: " + pos[0] + " PosY: " + pos[1]);
 		while(zuVerteilen > 0)
 		{
 			if(map[pos[0]][pos[1]] == null)
@@ -107,43 +108,48 @@ public class MapGen
 				zuVerteilen--;
 			}
 			
-			berechneneuePos(pos);
+			pos = berechneneuePos(pos);
 		}
 	}
 	
 	
-	private void berechneneuePos(int[] pos) 
+	private int[] berechneneuePos(int[] pos) 
 	{
-		int[] neuePos = pos;
+		int[] neuePos = new int[2];
+		neuePos[0] = pos[0];
+		neuePos[1] = pos[1];
 		
 		boolean inFeld = false;
-		while(inFeld)
+		while(!inFeld)
 		{
+			
 			int richtung = (int)(Math.random()*4);
-		
-			switch(richtung)
+			
+			if (richtung == 0)
 			{
-				case 0:	neuePos[0]++;
-						break;
-				case 1:	neuePos[0]--;
-						break;
-				case 2:	neuePos[1]++;
-						break;
-				case 3:	neuePos[1]--;	
-						break;
+				neuePos[0] = pos[0]+1;
+			}
+			if (richtung == 1)
+			{
+				neuePos[0] = pos[0]-1;
+			}
+			if (richtung == 2)
+			{
+				neuePos[1] = pos[1]+1;
+			}
+			if(richtung == 3)
+			{
+				neuePos[1] = pos[1]-1;
 			}
 			
 			inFeld = checkInMap(neuePos);
-			if(inFeld)
-			{
-				pos = neuePos;
-			}
 		}
+		return neuePos;
 	}
 
 	private boolean checkInMap(int[] pos)
 	{
-		if(pos[0]<0 || pos[0]>map.length || pos[1]<0 || pos[1]>map[0].length)
+		if(pos[0]<0 || pos[0]>=map.length || pos[1]<0 || pos[1]>=map[0].length)
 			return false;
 		return true;
 	}
@@ -159,7 +165,6 @@ public class MapGen
 		{
 			start[0] = (int)(Math.random()*map.length);
 			start[1] = (int)(Math.random()*map[0].length);
-				
 			if ((map[start[0]][start[1]] == null))
 			{
 				besetzt = false;
