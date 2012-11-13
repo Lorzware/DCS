@@ -4,90 +4,176 @@ import Felder.Feld;
 
 public class MapGen 
 {
-	public MapGen(Feld[][] map, int wasserSlider, int gwSlider, int wuestenSlider, int tundraSlider)
+	
+	private int wasserMenge;
+	private int wuestenMenge;
+	private int tundraMenge;
+	private Feld[][] map;
+	
+	
+	public Feld[][] generiereMap(int mapGroesseX, int mapGroesseY, int wasserSlider, int gwSlider, int wuestenSlider, int tundraSlider)
 	{
-		int wasserMenge = berechneMenge(wasserSlider, gwSlider, wuestenSlider, tundraSlider, map);
-		int wuestenMenge = berechneMenge(wuestenSlider,wasserSlider, gwSlider, tundraSlider, map);
-		int tundraMenge = berechneMenge(tundraSlider, wasserSlider, gwSlider, wuestenSlider, map);
+		map = new Feld[mapGroesseX][mapGroesseY];
 		
-		erzeugeWasser(wasserMenge, map);
+		berechneMengen(wasserSlider, gwSlider, wuestenSlider, tundraSlider);
 		
-		erzeugeGruenflaechen(map);
+		erzeugeWasser();
+		erzeugeTundra();
+		erzeugeWueste();
+		
+		erzeugeGruenflaechen();
+		return map;
+	}
+
+	
+	private void erzeugeWueste() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void erzeugeTundra() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	private void erzeugeWasser()
+	{
+		int anzahlFlecken = bestimmeAnzahlSpots(wasserMenge);
+
+		int[] fleckengroesse = berechneFleckengroesse(anzahlFlecken);
+		
+		for(int i = 0; fleckengroesse.length < i ; i++)
+		{
+			setzeWasser(fleckengroesse[i]);
+		}
 	}
 	
-	
-	private void erzeugeWasser(int wasserMenge, Feld[][] map)
+	private int[] berechneFleckengroesse(int anzahlFlecken)
 	{
-		int wasserBen = wasserMenge;
-		while(wasserBen > 0)
+		int[] fleckengroesse = new int[anzahlFlecken];
+		
+		if ( fleckengroesse.length == 1)
 		{
-			int startx = 0;
-			int starty = 0;
-			boolean besetzt = true;
-			while(besetzt)
-			{
-				startx = (int)(Math.random()*map.length);
-				starty = (int)(Math.random()*map[0].length);
-				
-				besetzt = !(map[startx][starty] == null);
-			}
-			for(int j = 0; j < 3; j++)
-			{
-				wasserBen = setzeWasser(map, startx, starty, wasserBen);
-			}
-			
-			wasserBen--;
+			fleckengroesse[0] = wasserMenge;
 		}
 		
-	}
-	
-	private int setzeWasser(Feld[][] map, int startx, int starty, int benoetigt)
-	{
-		int i = 10;
-		
-		while( (i > 0) && (benoetigt > 0) )
+		if ( fleckengroesse.length == 2)
 		{
-			if(!!(map[startx][starty] == null))
-			{
-				map[startx][starty] = new WasserCreator().createFeld();
-				benoetigt --;
-				i--;
-			}	
-			
-			boolean inFeld = false;
-			while(inFeld == false)
-			{
-				int richtung = (int)(Math.random()*4);
-			
-				if(richtung == 0)
-				{
-					startx++;
-				}
-				if(richtung == 1)
-				{
-					startx--;
-				}
-				if(richtung == 2)
-				{
-					starty++;
-				}
-				if(richtung == 3)
-				{
-					starty--;
-				}
-				
-				if(((startx >= 0 ) &&(starty < map[0].length)) && ((starty >= 0 ) &&(startx < map.length)))
-				{
-					inFeld = true;
-				}
-			}
+			fleckengroesse[0] = (int) (wasserMenge * Math.random());
+			fleckengroesse[1] = wasserMenge - fleckengroesse[0];
 		}
 		
-		return benoetigt;
+		if ( fleckengroesse.length == 3)
+		{
+			fleckengroesse[0] = (int) (wasserMenge * Math.random());
+			fleckengroesse[1] = (int) ((wasserMenge - fleckengroesse[0]) * Math.random());
+			fleckengroesse[2] = wasserMenge - fleckengroesse[1] - fleckengroesse[0];
+		}
+		return fleckengroesse;
+	}
+
+	
+	private int bestimmeAnzahlSpots(int menge) 
+	{
+		if (menge > 50)
+		{
+			return (int) (Math.random()*3);
+		}
+		else if (menge < 20)
+		{
+			return 1;
+		}
+		else
+		{
+			return (int) (Math.random()*2);
+		}
+	}
+
+	
+	private void setzeWasser(int anzahl)
+	{
+		int zuVerteilen = anzahl;
+		
+		int[] pos = sucheWasserStartPunkt();
+		
+		while(zuVerteilen > 0)
+		{
+			
+			if(map[pos[0]][pos[1]] == null)
+			{
+				map[pos[0]][pos[1]] = new WasserCreator().createFeld();
+				zuVerteilen--;
+			}
+			
+			berechneneuePos(pos);
+		}
 	}
 	
 	
-	private void erzeugeGruenflaechen(Feld[][] map)
+	private void berechneneuePos(int[] pos) 
+	{
+		int[] neuePos = pos;
+		
+		boolean inFeld = false;
+		while(inFeld)
+		{
+			int richtung = (int)(Math.random()*4);
+		
+			switch(richtung)
+			{
+				case 0:	neuePos[0]++;
+						break;
+				case 1:	neuePos[0]--;
+						break;
+				case 2:	neuePos[1]++;
+						break;
+				case 3:	neuePos[1]--;	
+						break;
+			}
+			
+			inFeld = checkInMap(neuePos);
+			if(inFeld)
+			{
+				pos = neuePos;
+			}
+		}
+	}
+
+	private boolean checkInMap(int[] pos)
+	{
+		if(pos[0]<0 || pos[0]>map.length || pos[1]<0 || pos[1]>map[0].length)
+			return false;
+		return true;
+	}
+	
+	
+	private int[] sucheWasserStartPunkt() 
+	{
+		int[] start = new int[2]; // x, y
+		
+		boolean besetzt = true;
+		
+		while(besetzt)
+		{
+			start[0] = (int)(Math.random()*map.length);
+			start[1] = (int)(Math.random()*map[0].length);
+				
+			if (!(map[start[0]][start[1]] == null))
+			{
+				besetzt = true;
+			}
+		}
+		return start;
+	}
+
+
+
+
+
+	private void erzeugeGruenflaechen()
 	{
 		for(int i = 0; i < map.length; i++)
 		{
@@ -102,7 +188,20 @@ public class MapGen
 	}
 	
 	
-	private int berechneMenge(int a, int b, int c, int d, Feld[][] map)
+	
+	private void berechneMengen(int wasserSlider, int gwSlider,
+			int wuestenSlider, int tundraSlider) 
+	{
+		
+		wasserMenge = berechneFeldMenge(wasserSlider, gwSlider, wuestenSlider, tundraSlider);
+		wuestenMenge = berechneFeldMenge(wuestenSlider,wasserSlider, gwSlider, tundraSlider);
+		tundraMenge = berechneFeldMenge(tundraSlider, wasserSlider, gwSlider, wuestenSlider);
+		
+	}
+	
+	
+	
+	private int berechneFeldMenge(int a, int b, int c, int d)
 	{
 		double anteil = a/((a+b+c+d)/100);
 		
