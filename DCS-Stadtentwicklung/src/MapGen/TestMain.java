@@ -3,13 +3,15 @@ package MapGen;
 import Felder.Feld;
 
 public class TestMain {
+	
+	public static MapGen mapGen;
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) 
+	public void generate() 
 	{
-		MapGen mapGen = new MapGen();
+		mapGen = new MapGen();
 		
 		Feld[][] map = mapGen.generiereMap(30, 30, 25, 75, 0, 0);
 		
