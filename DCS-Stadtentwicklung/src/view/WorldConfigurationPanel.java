@@ -165,4 +165,53 @@ public class WorldConfigurationPanel extends JPanel
 		gbc.gridwidth = gridWidth;
 		gbc.gridheight = gridHeight;
 	}
+
+
+
+
+	public JSlider getsWasser() {
+		return sWasser;
+	}
+
+
+
+
+	public JSlider getsTundra() {
+		return sTundra;
+	}
+
+
+
+
+	public JSlider getsWiese() {
+		return sWiese;
+	}
+
+
+
+
+	public JSlider getsWueste() {
+		return sWueste;
+	}
+
+
+
+
+	public JSlider getsRohstoffdichte() {
+		return sRohstoffdichte;
+	}
+
+
+
+
+	public JButton getbGenerieren() {
+		return bGenerieren;
+	}
+
+
+
+
+	public JButton getbGeneriereRohstoffe() {
+		return bGeneriereRohstoffe;
+	}
 }
