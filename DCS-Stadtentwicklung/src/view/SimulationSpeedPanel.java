@@ -132,22 +132,4 @@ public class SimulationSpeedPanel extends JPanel
 		gbc.gridx = gridX;
 		gbc.gridy = gridY;
 	}
-
-
-
-	public JButton getbStart() {
-		return bStart;
-	}
-
-
-
-	public JTextField getTfMaximalSpeed() {
-		return tfMaximalSpeed;
-	}
-
-
-
-	public JSlider getsSpeed() {
-		return sSpeed;
-	}
 }

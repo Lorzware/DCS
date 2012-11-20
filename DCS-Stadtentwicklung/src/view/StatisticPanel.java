@@ -133,28 +133,4 @@ public class StatisticPanel extends JPanel
 		gbc.gridx = gridX;
 		gbc.gridy = gridY;
 	}
-
-
-
-	public JTextField getTfEinfohner() {
-		return tfEinfohner;
-	}
-
-
-
-	public JTextField getTfGewerbe() {
-		return tfGewerbe;
-	}
-
-
-
-	public JTextField getTfLandwirtschaft() {
-		return tfLandwirtschaft;
-	}
-
-
-
-	public JTextField getTfIndustrie() {
-		return tfIndustrie;
-	}
 }

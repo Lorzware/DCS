@@ -113,28 +113,4 @@ public class MainPanel extends JPanel
 		gbc.gridheight = gridHeight;
 		
 	}
-
-
-
-	public WorldConfigurationPanel getpWorldConfiguration() {
-		return pWorldConfiguration;
-	}
-
-
-
-	public BuildingPanel getpBuilding() {
-		return pBuilding;
-	}
-
-
-
-	public StatisticPanel getpStatistic() {
-		return pStatistic;
-	}
-
-
-
-	public SimulationSpeedPanel getpSimulationSpeed() {
-		return pSimulationSpeed;
-	}
 }
