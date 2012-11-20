@@ -11,15 +11,15 @@ public class TestMain {
 	{
 		MapGen mapGen = new MapGen();
 		
-		Feld[][] map = mapGen.generiereMap(30, 30, 25, 75, 0, 0);
+		Feld[][] map = mapGen.generiereMap(30, 30, 25, 75, 0, 0, 0);
 		
-		for(int i = 0; i < map.length; i++)
-		{
-			for(int j = 0; j < map[0].length; j++)
-			{
-				System.out.println(map[i][j]);
-			}
-		}
+//		for(int i = 0; i < map.length; i++)
+//		{
+//			for(int j = 0; j < map[0].length; j++)
+//			{
+//				System.out.println(map[i][j].getClass().getName() + " PosX " + i + " PosY " + j);
+//			}
+//		}
 	}
 
 }
