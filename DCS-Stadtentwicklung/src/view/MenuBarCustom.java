@@ -54,4 +54,8 @@ public class MenuBarCustom extends JMenuBar
 		
 		add(menu);
 	}
+
+	public JMenu getMenu() {
+		return menu;
+	}
 }

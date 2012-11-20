@@ -38,5 +38,17 @@ public class MainFrame
 		menu = new MenuBarCustom();
 		frame.setJMenuBar(menu);
 	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public MainPanel getpMain() {
+		return pMain;
+	}
+
+	public MenuBarCustom getMenu() {
+		return menu;
+	}
 	
 }
